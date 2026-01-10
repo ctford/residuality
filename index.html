@@ -448,7 +448,6 @@
         <nav>
             <div class="nav-tabs">
                 <button class="tab-btn active" onclick="switchTab('stressors')">Stressor Analysis</button>
-                <button class="tab-btn" onclick="switchTab('components')">Components</button>
                 <button class="tab-btn" onclick="switchTab('contagion')">Contagion Analysis</button>
                 <button class="tab-btn" onclick="switchTab('summary')">Summary</button>
             </div>
@@ -468,27 +467,16 @@
             <div id="stressorsList"></div>
         </div>
 
-        <!-- COMPONENTS TAB -->
-        <div id="components" class="tab-content">
-            <div class="section">
-                <h2>Architecture Components</h2>
-                <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Major components, services, or functions in your architecture.</p>
-                <div class="input-group">
-                    <input type="text" id="componentInput" placeholder="e.g., Auth Service, Database, API Gateway, Payment Handler...">
-                    <button onclick="addComponent()">Add Component</button>
-                </div>
-                <div id="componentsList" style="margin-top: 20px;"></div>
-            </div>
-        </div>
+
 
         <!-- CONTAGION ANALYSIS TAB -->
         <div id="contagion" class="tab-content">
             <div class="section">
                 <h2>Incidence Matrix: Stressors × Components</h2>
-                <p style="font-size: 12px; color: #666; margin-bottom: 20px;">Click cells to toggle. 1 = component affected by stressor, 0 = not affected. Reveals hidden coupling and failure paths.</p>
+                <p style="font-size: 12px; color: #666; margin-bottom: 20px;">Click cells to toggle. 1 = component affected by stressor, 0 = not affected. Add new component columns in the matrix header.</p>
                 
                 <div id="matrixContainer" class="matrix-container">
-                    <div class="empty-state">Add stressors and components to build matrix</div>
+                    <div class="empty-state">Add stressors to begin analysis</div>
                 </div>
             </div>
 
@@ -648,6 +636,26 @@
             render();
         }
 
+        function addComponentFromMatrix() {
+            const input = document.getElementById('newComponentInput');
+            if (!input) return;
+            const name = input.value.trim();
+            if (!name) return;
+            
+            // Clear immediately to prevent duplicate adds from blur
+            input.value = '';
+            
+            const id = generateId();
+            state.components.push({ id, name });
+            
+            // Add to all stressors
+            state.stressors.forEach(s => {
+                state.matrix[s.id][id] = 0;
+            });
+            
+            render();
+        }
+
         // MATRIX
         function toggleCell(stressorId, componentId) {
             if (!state.matrix[stressorId]) state.matrix[stressorId] = {};
@@ -714,32 +722,29 @@
 
         function renderComponents() {
             const container = document.getElementById('componentsList');
-            
-            if (state.components.length === 0) {
-                container.innerHTML = '<div class="empty-state">No components yet</div>';
-                return;
-            }
-            
-            container.innerHTML = state.components.map(c => `
-                <div class="tag">
-                    <span>${c.name}</span>
-                    <button onclick="removeComponent('${c.id}')">×</button>
-                </div>
-            `).join('');
+            if (!container) return; // Container no longer exists in Contagion tab
         }
 
         function renderMatrix() {
             const container = document.getElementById('matrixContainer');
             
-            if (state.stressors.length === 0 || state.components.length === 0) {
-                container.innerHTML = '<div class="empty-state">Add stressors and components to build matrix</div>';
+            if (state.stressors.length === 0) {
+                container.innerHTML = '<div class="empty-state">Add stressors to begin analysis</div>';
+                renderTriggers({}, {}); // Clear triggers when no stressors
                 return;
             }
             
             let html = '<table><tr><th>Stressor</th>';
             state.components.forEach(c => {
-                html += `<th>${c.name}</th>`;
+                html += `<th>${c.name}<br><button class="btn-remove" style="margin-top: 4px;" onclick="removeComponent('${c.id}')">×</button></th>`;
             });
+            if (state.components.length === 0) {
+                html += `<th style="width: 150px;">
+                    <input type="text" id="newComponentInput" placeholder="Add component..." style="width: 100%; padding: 6px; font-size: 11px; box-sizing: border-box;" onkeypress="if(event.key==='Enter') addComponentFromMatrix()" onblur="addComponentFromMatrix()" autofocus>
+                </th>`;
+            } else {
+                html += `<th><input type="text" id="newComponentInput" placeholder="+" style="width: 60px; padding: 4px; font-size: 11px;" onkeypress="if(event.key==='Enter') addComponentFromMatrix()" onblur="addComponentFromMatrix()"></th>`;
+            }
             html += '<th>Row Total</th></tr>';
             
             const rowTotals = {};
@@ -758,6 +763,7 @@
                     colTotals[c.id] += val;
                 });
                 
+                html += `<td></td>`; // Empty cell for add component column
                 html += `<td class="total">${rowTotals[s.id]}</td></tr>`;
             });
             
@@ -768,6 +774,13 @@
             html += '<td></td></tr></table>';
             
             container.innerHTML = html;
+            
+            // Focus the component input if it's the first time
+            setTimeout(() => {
+                const input = document.getElementById('newComponentInput');
+                if (input && state.components.length === 0) input.focus();
+            }, 0);
+            
             renderTriggers(rowTotals, colTotals);
         }
 
@@ -901,9 +914,6 @@
         
         document.getElementById('stressorNameInput').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') addStressor();
-        });
-        document.getElementById('componentInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') addComponent();
         });
     </script>
 </body>
