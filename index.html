@@ -957,7 +957,7 @@
                     ${state.components.length > 0 ? `
                     <div style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px;">
                         ${state.components.filter(c => state.matrix[s.id] && state.matrix[s.id][c.id]).map(c => `
-                            <span class="tag" style="background: #667eea; color: white; padding: 6px 10px; border-radius: 4px; font-size: 12px;">${c.name}</span>
+                            <span class="tag" style="background: #f5f5f5; color: #666; padding: 6px 10px; border-radius: 4px; font-size: 12px; border: 1px solid #ddd;">${c.name}</span>
                         `).join('')}
                     </div>
                     ` : ''}
