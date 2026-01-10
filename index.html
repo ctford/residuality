@@ -85,7 +85,24 @@
             font-weight: 500;
             cursor: pointer;
             transition: background 0.2s ease;
+        }
+
+        .example-btn {
+            padding: 6px 8px;
+            background: #667eea;
+            border: none;
+            color: white;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s ease;
             margin-left: auto;
+            margin-right: 8px;
+        }
+
+        .example-btn:hover {
+            background: #5568d3;
         }
 
         .clear-btn:hover {
@@ -465,6 +482,7 @@
                 <button class="tab-btn" onclick="switchTab('contagion')">Contagion Analysis</button>
                 <button class="tab-btn" onclick="switchTab('summary')">Summary</button>
             </div>
+            <button class="example-btn" onclick="loadExample()">Load Example</button>
             <button class="clear-btn" onclick="clearData()">Clear</button>
         </nav>
 
@@ -550,6 +568,80 @@
                 state.components = [];
                 state.matrix = {};
                 render();
+            }
+        }
+
+        function loadExample() {
+            if (confirm('Load example data? This will replace your current work.')) {
+                state.stressors = [
+                    {
+                        id: 'ex-1',
+                        name: 'Sudden Traffic Spike',
+                        attractor: 'System scales horizontally to handle load',
+                        businessReaction: 'Investigate infrastructure costs and optimize',
+                        residues: [
+                            { id: 'ex-1-r1', text: 'Added load balancer' },
+                            { id: 'ex-1-r2', text: 'Database replication configured' },
+                            { id: 'ex-1-r3', text: 'Caching layer introduced' }
+                        ]
+                    },
+                    {
+                        id: 'ex-2',
+                        name: 'Security Breach',
+                        attractor: 'System hardens authentication and encryption',
+                        businessReaction: 'Audit all user data access and implement compliance',
+                        residues: [
+                            { id: 'ex-2-r1', text: 'Authentication hardened with MFA' },
+                            { id: 'ex-2-r2', text: 'Encryption at rest implemented' },
+                            { id: 'ex-2-r3', text: 'API security layer added' }
+                        ]
+                    },
+                    {
+                        id: 'ex-3',
+                        name: 'Data Corruption',
+                        attractor: 'System implements strict data validation and recovery',
+                        businessReaction: 'Implement backup and rollback procedures',
+                        residues: [
+                            { id: 'ex-3-r1', text: 'Data validation rules added' },
+                            { id: 'ex-3-r2', text: 'Backup strategy implemented' }
+                        ]
+                    }
+                ];
+
+                state.components = [
+                    { id: 'ex-c1', name: 'API Gateway' },
+                    { id: 'ex-c2', name: 'Database' },
+                    { id: 'ex-c3', name: 'Auth Service' },
+                    { id: 'ex-c4', name: 'Cache' },
+                    { id: 'ex-c5', name: 'Load Balancer' }
+                ];
+
+                state.matrix = {
+                    'ex-1': {
+                        'ex-c1': 1,
+                        'ex-c2': 1,
+                        'ex-c3': 0,
+                        'ex-c4': 1,
+                        'ex-c5': 1
+                    },
+                    'ex-2': {
+                        'ex-c1': 1,
+                        'ex-c2': 0,
+                        'ex-c3': 1,
+                        'ex-c4': 0,
+                        'ex-c5': 0
+                    },
+                    'ex-3': {
+                        'ex-c1': 0,
+                        'ex-c2': 1,
+                        'ex-c3': 0,
+                        'ex-c4': 0,
+                        'ex-c5': 0
+                    }
+                };
+
+                render();
+                switchTab('stressors');
             }
         }
 
