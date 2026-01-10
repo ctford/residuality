@@ -461,8 +461,53 @@
         }
 
         @media (max-width: 768px) {
+            nav {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            
+            .nav-tabs {
+                width: 100%;
+            }
+            
+            .example-btn,
+            .clear-btn {
+                flex: 1;
+                min-width: 100px;
+            }
+            
             .stressor-fields {
                 grid-template-columns: 1fr;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .input-group input,
+            .input-group button {
+                width: 100%;
+            }
+            
+            header {
+                padding: 20px;
+            }
+            
+            header h1 {
+                font-size: 22px;
+            }
+            
+            .matrix-container {
+                overflow-x: auto;
+            }
+            
+            table {
+                font-size: 11px;
+            }
+            
+            th, td {
+                padding: 6px 4px;
+                min-width: 40px;
             }
         }
     </style>
