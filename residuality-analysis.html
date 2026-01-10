@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Residuality Analysis Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .attribution {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 12px;
+        }
+
+        .attribution a {
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .attribution a:hover {
+            border-bottom-color: white;
+        }
+
+        nav {
+            display: flex;
+            background: #f5f5f5;
+            border-bottom: 1px solid #e0e0e0;
+            overflow-x: auto;
+        }
+
+        nav button {
+            flex: 1;
+            padding: 16px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        nav button.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            background: #f0f0ff;
+        }
+
+        nav button:hover {
+            background: #f9f9f9;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            font-size: 18px;
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        input[type="text"],
+        textarea {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.2s ease;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        button {
+            padding: 10px 16px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.2s ease;
+        }
+
+        button:hover {
+            background: #5568d3;
+        }
+
+        .stressor-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            background: white;
+            transition: all 0.2s ease;
+            margin-bottom: 20px;
+        }
+
+        .stressor-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+        }
+
+        .stressor-card h3 {
+            font-size: 16px;
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stressor-fields {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .field label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .field input,
+        .field textarea {
+            font-size: 13px;
+        }
+
+        .residues-list {
+            background: #f5f5f5;
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+
+        .residue-item {
+            background: white;
+            padding: 8px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 3px solid #667eea;
+        }
+
+        .residue-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .btn-remove {
+            background: #ff6b6b;
+            padding: 4px 8px;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+
+        .btn-remove:hover {
+            background: #ff5252;
+        }
+
+        .residue-input-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .residue-input-group input {
+            flex: 1;
+        }
+
+        .residue-input-group button {
+            padding: 8px 12px;
+        }
+
+        .tag {
+            background: #e0e7ff;
+            color: #667eea;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .tag button {
+            background: transparent;
+            color: #667eea;
+            padding: 0;
+            margin: 0;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .tag button:hover {
+            color: #ff6b6b;
+        }
+
+        .matrix-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            background: white;
+            border: 1px solid #e0e0e0;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        td {
+            cursor: pointer;
+            transition: background 0.1s ease;
+        }
+
+        td.one {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+
+        td.zero {
+            background: #f5f5f5;
+        }
+
+        td.rowheader, td.colheader {
+            background: #f9f9f9;
+            text-align: left;
+            cursor: default;
+            font-weight: 500;
+        }
+
+        td.total {
+            background: #ffe0e0;
+            font-weight: bold;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .trigger {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .trigger.critical {
+            background: #ffebee;
+            border-left-color: #f44336;
+        }
+
+        .trigger-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .summary-card {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .summary-card h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .summary-card p {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .stressor-fields {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="attribution">
+                Based on <a href="https://leanpub.com/residuality" target="_blank">Residuality by Barry O'Reilly</a>
+            </div>
+            <h1>Residuality Analysis Tool</h1>
+            <p>Stressor → Attractor → Business Reaction → Residues (Technical Changes)</p>
+        </header>
+
+        <nav>
+            <button class="tab-btn active" onclick="switchTab('stressors')">Stressor Analysis</button>
+            <button class="tab-btn" onclick="switchTab('components')">Components</button>
+            <button class="tab-btn" onclick="switchTab('contagion')">Contagion Analysis</button>
+            <button class="tab-btn" onclick="switchTab('summary')">Summary</button>
+        </nav>
+
+        <!-- STRESSOR ANALYSIS TAB -->
+        <div id="stressors" class="tab-content active">
+            <div class="section">
+                <h2>Add Stressor</h2>
+                <div class="input-group">
+                    <input type="text" id="stressorNameInput" placeholder="e.g., Competitor drops price, Server outage, New regulation...">
+                    <button onclick="addStressor()">Add Stressor</button>
+                </div>
+            </div>
+
+            <div id="stressorsList"></div>
+        </div>
+
+        <!-- COMPONENTS TAB -->
+        <div id="components" class="tab-content">
+            <div class="section">
+                <h2>Architecture Components</h2>
+                <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Major components, services, or functions in your architecture.</p>
+                <div class="input-group">
+                    <input type="text" id="componentInput" placeholder="e.g., Auth Service, Database, API Gateway, Payment Handler...">
+                    <button onclick="addComponent()">Add Component</button>
+                </div>
+                <div id="componentsList" style="margin-top: 20px;"></div>
+            </div>
+        </div>
+
+        <!-- CONTAGION ANALYSIS TAB -->
+        <div id="contagion" class="tab-content">
+            <div class="section">
+                <h2>Incidence Matrix: Stressors × Components</h2>
+                <p style="font-size: 12px; color: #666; margin-bottom: 20px;">Click cells to toggle. 1 = component affected by stressor, 0 = not affected. Reveals hidden coupling and failure paths.</p>
+                
+                <div id="matrixContainer" class="matrix-container">
+                    <div class="empty-state">Add stressors and components to build matrix</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Contagion Triggers</h2>
+                <p style="font-size: 12px; color: #666; margin-bottom: 15px;">Patterns that reveal architectural risks and hyperliminal coupling:</p>
+                <div id="contagionTriggers"></div>
+            </div>
+        </div>
+
+        <!-- SUMMARY TAB -->
+        <div id="summary" class="tab-content">
+            <div class="section">
+                <h2>Analysis Summary</h2>
+                <div id="summaryContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const state = {
+            stressors: [],
+            components: [],
+            matrix: {} // { stressorId: { componentId: 0/1 } }
+        };
+
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // STRESSORS
+        function addStressor() {
+            const input = document.getElementById('stressorNameInput');
+            const name = input.value.trim();
+            if (!name) return;
+            
+            const id = generateId();
+            state.stressors.push({
+                id,
+                name,
+                attractor: '',
+                businessReaction: '',
+                residues: []
+            });
+            state.matrix[id] = {};
+            state.components.forEach(c => {
+                state.matrix[id][c.id] = 0;
+            });
+            
+            input.value = '';
+            render();
+        }
+
+        function removeStressor(id) {
+            state.stressors = state.stressors.filter(s => s.id !== id);
+            delete state.matrix[id];
+            render();
+        }
+
+        function updateStressorField(id, field, value) {
+            const stressor = state.stressors.find(s => s.id === id);
+            if (stressor) {
+                stressor[field] = value;
+                render();
+            }
+        }
+
+        function addResidue(stressorId) {
+            const input = document.querySelector(`#residueInput-${stressorId}`);
+            const residue = input.value.trim();
+            if (!residue) return;
+            
+            const stressor = state.stressors.find(s => s.id === stressorId);
+            if (stressor) {
+                stressor.residues.push({
+                    id: generateId(),
+                    text: residue
+                });
+                input.value = '';
+                render();
+            }
+        }
+
+        function removeResidue(stressorId, residueId) {
+            const stressor = state.stressors.find(s => s.id === stressorId);
+            if (stressor) {
+                stressor.residues = stressor.residues.filter(r => r.id !== residueId);
+                render();
+            }
+        }
+
+        // COMPONENTS
+        function addComponent() {
+            const input = document.getElementById('componentInput');
+            const name = input.value.trim();
+            if (!name) return;
+            
+            const id = generateId();
+            state.components.push({ id, name });
+            
+            // Add to all stressors
+            state.stressors.forEach(s => {
+                state.matrix[s.id][id] = 0;
+            });
+            
+            input.value = '';
+            render();
+        }
+
+        function removeComponent(id) {
+            state.components = state.components.filter(c => c.id !== id);
+            state.stressors.forEach(s => {
+                delete state.matrix[s.id][id];
+            });
+            render();
+        }
+
+        // MATRIX
+        function toggleCell(stressorId, componentId) {
+            if (!state.matrix[stressorId]) state.matrix[stressorId] = {};
+            state.matrix[stressorId][componentId] = state.matrix[stressorId][componentId] ? 0 : 1;
+            render();
+        }
+
+        // RENDERING
+        function renderStressors() {
+            const container = document.getElementById('stressorsList');
+            
+            if (state.stressors.length === 0) {
+                container.innerHTML = '<div class="empty-state">No stressors yet</div>';
+                return;
+            }
+            
+            container.innerHTML = state.stressors.map(s => `
+                <div class="stressor-card">
+                    <h3>
+                        ${s.name}
+                        <button class="btn-remove" onclick="removeStressor('${s.id}')">Remove</button>
+                    </h3>
+                    
+                    <div class="stressor-fields">
+                        <div class="field">
+                            <label>Attractor (New System State)</label>
+                            <textarea 
+                                onchange="updateStressorField('${s.id}', 'attractor', this.value)"
+                                placeholder="What configuration of the system does this stressor push us to?"
+                            >${s.attractor}</textarea>
+                        </div>
+                        <div class="field">
+                            <label>Business Reaction</label>
+                            <textarea 
+                                onchange="updateStressorField('${s.id}', 'businessReaction', this.value)"
+                                placeholder="How will the business respond to this new state?"
+                            >${s.businessReaction}</textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="field">
+                        <label>Residues (Technical Changes)</label>
+                        <div class="residues-list">
+                            ${s.residues.length > 0 ? s.residues.map(r => `
+                                <div class="residue-item">
+                                    <span>${r.text}</span>
+                                    <button class="btn-remove" onclick="removeResidue('${s.id}', '${r.id}')">Remove</button>
+                                </div>
+                            `).join('') : '<p style="color: #999; font-size: 11px; margin: 0;">No residues yet</p>'}
+                        </div>
+                        <div class="residue-input-group">
+                            <input 
+                                type="text" 
+                                id="residueInput-${s.id}" 
+                                placeholder="Add a technical change..."
+                                onkeypress="if(event.key==='Enter') addResidue('${s.id}')"
+                            >
+                            <button onclick="addResidue('${s.id}')">Add</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderComponents() {
+            const container = document.getElementById('componentsList');
+            
+            if (state.components.length === 0) {
+                container.innerHTML = '<div class="empty-state">No components yet</div>';
+                return;
+            }
+            
+            container.innerHTML = state.components.map(c => `
+                <div class="tag">
+                    <span>${c.name}</span>
+                    <button onclick="removeComponent('${c.id}')">×</button>
+                </div>
+            `).join('');
+        }
+
+        function renderMatrix() {
+            const container = document.getElementById('matrixContainer');
+            
+            if (state.stressors.length === 0 || state.components.length === 0) {
+                container.innerHTML = '<div class="empty-state">Add stressors and components to build matrix</div>';
+                return;
+            }
+            
+            let html = '<table><tr><th>Stressor</th>';
+            state.components.forEach(c => {
+                html += `<th>${c.name}</th>`;
+            });
+            html += '<th>Row Total</th></tr>';
+            
+            const rowTotals = {};
+            const colTotals = {};
+            state.components.forEach(c => colTotals[c.id] = 0);
+            
+            state.stressors.forEach(s => {
+                html += `<tr><td class="rowheader">${s.name}</td>`;
+                rowTotals[s.id] = 0;
+                
+                state.components.forEach(c => {
+                    const val = state.matrix[s.id][c.id] || 0;
+                    const cellClass = val ? 'one' : 'zero';
+                    html += `<td class="${cellClass}" onclick="toggleCell('${s.id}', '${c.id}')">${val}</td>`;
+                    rowTotals[s.id] += val;
+                    colTotals[c.id] += val;
+                });
+                
+                html += `<td class="total">${rowTotals[s.id]}</td></tr>`;
+            });
+            
+            html += '<tr><td class="colheader">Col Total</td>';
+            state.components.forEach(c => {
+                html += `<td class="total">${colTotals[c.id]}</td>`;
+            });
+            html += '<td></td></tr></table>';
+            
+            container.innerHTML = html;
+            renderTriggers(rowTotals, colTotals);
+        }
+
+        function renderTriggers(rowTotals, colTotals) {
+            const container = document.getElementById('contagionTriggers');
+            const triggers = [];
+            const totalComponents = state.components.length;
+            
+            // Trigger 1: High row totals (high-impact stressors)
+            state.stressors.forEach(s => {
+                const impactRatio = rowTotals[s.id] / totalComponents;
+                if (impactRatio > 0.6) {
+                    triggers.push({
+                        type: 'critical',
+                        num: 1,
+                        title: `High-Impact Stressor: ${s.name}`,
+                        desc: `Affects ${rowTotals[s.id]}/${totalComponents} components. Reveals widespread hyperliminal coupling.`
+                    });
+                }
+            });
+            
+            // Trigger 2: High column totals (vulnerable components)
+            state.components.forEach(c => {
+                const stressRatio = colTotals[c.id] / state.stressors.length;
+                if (stressRatio > 0.7) {
+                    triggers.push({
+                        type: 'critical',
+                        num: 2,
+                        title: `Vulnerable Component: ${c.name}`,
+                        desc: `Affected by ${colTotals[c.id]}/${state.stressors.length} stressors. Needs redundancy or refactoring.`
+                    });
+                }
+            });
+            
+            // Trigger 3: Multiple 1s in same row (hyperliminal coupling)
+            state.stressors.forEach(s => {
+                const affectedComponents = state.components.filter(c => state.matrix[s.id][c.id]);
+                if (affectedComponents.length > 2) {
+                    triggers.push({
+                        type: 'warning',
+                        num: 3,
+                        title: `Hyperliminal Coupling: ${s.name}`,
+                        desc: `Couples: ${affectedComponents.map(c => c.name).join(', ')}. Hidden dependencies—these components fail together.`
+                    });
+                }
+            });
+            
+            // Trigger 7: Untouched components
+            state.components.forEach(c => {
+                if (colTotals[c.id] === 0) {
+                    triggers.push({
+                        type: 'warning',
+                        num: 7,
+                        title: `Untouched Component: ${c.name}`,
+                        desc: `Not affected by any stressor. Either invulnerable or needs more stress testing.`
+                    });
+                }
+            });
+            
+            if (triggers.length === 0) {
+                container.innerHTML = '<div class="trigger"><div class="trigger-title">✓ No Critical Triggers</div>Architecture appears well-decomposed. Continue stressing to approach criticality.</div>';
+            } else {
+                container.innerHTML = triggers.map(t => `
+                    <div class="trigger ${t.type}">
+                        <div class="trigger-title">Trigger ${t.num}: ${t.title}</div>
+                        <div>${t.desc}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function renderSummary() {
+            const container = document.getElementById('summaryContent');
+            
+            let html = '<div class="summary-grid">';
+            
+            // Overview
+            html += `
+                <div class="summary-card">
+                    <h4>Analysis Overview</h4>
+                    <p><strong>Stressors:</strong> ${state.stressors.length}</p>
+                    <p><strong>Components:</strong> ${state.components.length}</p>
+                    <p><strong>Total Residues:</strong> ${state.stressors.reduce((sum, s) => sum + s.residues.length, 0)}</p>
+                </div>
+            `;
+            
+            // Stressor details
+            state.stressors.forEach(s => {
+                const affectedCount = state.components.length > 0 
+                    ? state.components.filter(c => state.matrix[s.id][c.id]).length 
+                    : 0;
+                const coverage = state.components.length > 0 
+                    ? Math.round((affectedCount / state.components.length) * 100)
+                    : 0;
+                
+                html += `
+                    <div class="summary-card">
+                        <h4>${s.name}</h4>
+                        ${s.attractor ? `<p><strong>Attractor:</strong> ${s.attractor}</p>` : ''}
+                        ${s.businessReaction ? `<p><strong>Business:</strong> ${s.businessReaction}</p>` : ''}
+                        <p><strong>Residues:</strong> ${s.residues.length}</p>
+                        <p><strong>Component Impact:</strong> ${coverage}%</p>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function render() {
+            renderStressors();
+            renderComponents();
+            renderMatrix();
+            renderSummary();
+        }
+
+        // Init
+        document.getElementById('stressorNameInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addStressor();
+        });
+        document.getElementById('componentInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addComponent();
+        });
+        
+        render();
+    </script>
+</body>
+</html>
