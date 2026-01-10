@@ -1056,8 +1056,6 @@
         function renderSummary() {
             const container = document.getElementById('summaryContent');
             
-            let html = '<div class="summary-grid">';
-            
             // Calculate N and K metrics
             const N = state.components.length;
             let K = 0;
@@ -1075,15 +1073,17 @@
             }
             
             // Overview
-            html += `
-                <div class="summary-card">
-                    <h4>Analysis Overview</h4>
+            let html = `
+                <div class="summary-card" style="background: #e0f2ff; border-left: 4px solid #667eea; margin-bottom: 20px;">
+                    <h4>Overview</h4>
                     <p><strong>Stressors:</strong> ${state.stressors.length}</p>
                     <p><strong>Components (N):</strong> ${N}</p>
                     <p><strong>Avg Stressors/Component (K):</strong> ${K}</p>
                     <p><strong>Total Residues:</strong> ${state.stressors.reduce((sum, s) => sum + s.residues.length, 0)}</p>
                 </div>
             `;
+            
+            html += '<div class="summary-grid">';
             
             // Stressor details
             state.stressors.forEach(s => {
