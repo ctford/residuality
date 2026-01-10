@@ -655,6 +655,12 @@
             });
             
             render();
+            
+            // Focus the input after render
+            setTimeout(() => {
+                const newInput = document.getElementById('newComponentInput');
+                if (newInput) newInput.focus();
+            }, 0);
         }
 
         // MATRIX
