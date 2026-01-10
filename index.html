@@ -1058,12 +1058,29 @@
             
             let html = '<div class="summary-grid">';
             
+            // Calculate N and K metrics
+            const N = state.components.length;
+            let K = 0;
+            if (N > 0) {
+                const colTotals = {};
+                state.components.forEach(c => colTotals[c.id] = 0);
+                state.stressors.forEach(s => {
+                    state.components.forEach(c => {
+                        if (state.matrix[s.id] && state.matrix[s.id][c.id]) {
+                            colTotals[c.id]++;
+                        }
+                    });
+                });
+                K = (Object.values(colTotals).reduce((a, b) => a + b, 0) / N).toFixed(2);
+            }
+            
             // Overview
             html += `
                 <div class="summary-card">
                     <h4>Analysis Overview</h4>
                     <p><strong>Stressors:</strong> ${state.stressors.length}</p>
-                    <p><strong>Components:</strong> ${state.components.length}</p>
+                    <p><strong>Components (N):</strong> ${N}</p>
+                    <p><strong>Avg Stressors/Component (K):</strong> ${K}</p>
                     <p><strong>Total Residues:</strong> ${state.stressors.reduce((sum, s) => sum + s.residues.length, 0)}</p>
                 </div>
             `;
