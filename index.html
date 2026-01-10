@@ -366,6 +366,19 @@
             font-size: 14px;
         }
 
+        .custom-tooltip {
+            position: absolute;
+            background: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 1000;
+            pointer-events: none;
+            max-width: 300px;
+            word-wrap: break-word;
+        }
+
         .trigger {
             background: #fff3cd;
             border-left: 4px solid #ffc107;
@@ -725,13 +738,10 @@
                     </div>
 
                     ${state.components.length > 0 ? `
-                    <div class="field" style="margin-top: 20px;">
-                        <label>Implicated Components</label>
-                        <div class="residues-list" style="display: flex; flex-wrap: wrap; gap: 8px; padding: 8px;">
-                            ${state.components.filter(c => state.matrix[s.id] && state.matrix[s.id][c.id]).map(c => `
-                                <span class="tag" style="background: #667eea; color: white; padding: 6px 10px; border-radius: 4px; font-size: 12px;">${c.name}</span>
-                            `).join('') || '<p style="color: #999; font-size: 11px; margin: 0;">No components affected</p>'}
-                        </div>
+                    <div style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px;">
+                        ${state.components.filter(c => state.matrix[s.id] && state.matrix[s.id][c.id]).map(c => `
+                            <span class="tag" style="background: #667eea; color: white; padding: 6px 10px; border-radius: 4px; font-size: 12px;">${c.name}</span>
+                        `).join('')}
                     </div>
                     ` : ''}
                     </div>
@@ -770,7 +780,12 @@
             state.components.forEach(c => colTotals[c.id] = 0);
             
             state.stressors.forEach(s => {
-                html += `<tr><td class="rowheader">${s.name}</td>`;
+                const residuesList = s.residues.length > 0 
+                    ? s.residues.map(r => r.text).join(', ')
+                    : 'No technical changes yet';
+                const escapedTitle = residuesList.replace(/"/g, '&quot;');
+                
+                html += `<tr><td class="rowheader" title="${escapedTitle}">${s.name}</td>`;
                 rowTotals[s.id] = 0;
                 
                 state.components.forEach(c => {
@@ -793,8 +808,36 @@
             
             container.innerHTML = html;
             
-            // Focus the component input if it's the first time
+            // Add custom tooltip event listeners to rowheader cells
             setTimeout(() => {
+                let tooltip = null;
+                
+                document.querySelectorAll('td.rowheader').forEach(cell => {
+                    cell.addEventListener('mouseenter', (e) => {
+                        const title = cell.getAttribute('title');
+                        if (title) {
+                            tooltip = document.createElement('div');
+                            tooltip.className = 'custom-tooltip';
+                            tooltip.textContent = title;
+                            document.body.appendChild(tooltip);
+                            
+                            const rect = cell.getBoundingClientRect();
+                            const scrollX = window.scrollX;
+                            const scrollY = window.scrollY;
+                            
+                            tooltip.style.left = (scrollX + rect.left + rect.width / 2 - tooltip.offsetWidth / 2) + 'px';
+                            tooltip.style.top = (scrollY + rect.top - tooltip.offsetHeight - 8) + 'px';
+                        }
+                    });
+                    
+                    cell.addEventListener('mouseleave', () => {
+                        if (tooltip) {
+                            tooltip.remove();
+                            tooltip = null;
+                        }
+                    });
+                });
+                
                 const input = document.getElementById('newComponentInput');
                 if (input && state.components.length === 0) input.focus();
             }, 0);
