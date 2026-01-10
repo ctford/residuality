@@ -50,7 +50,7 @@ View your analysis at a glance with component impact metrics.
 
 ## Attribution
 
-This tool is based on the residuality framework from Barry O'Reilly's book [Residuality](https://leanpub.com/residuality).
+This tool is based on the residuality framework from Barry O'Reilly's book [Residues](https://leanpub.com/residuality).
 
 ## License
 
