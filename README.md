@@ -63,7 +63,7 @@ O'Reilly advises that a comprehensive stressor analysis typically includes a few
 
 ## Attribution
 
-This tool is based on the residuality framework from [Barry O'Reilly](https://www.linkedin.com/in/barry-oreilly/)'s book [Residuality](https://leanpub.com/residuality).
+This tool is based on the residuality framework from [Barry O'Reilly](https://www.linkedin.com/in/barry-o-reilly-b924657/)'s book [Residuality](https://leanpub.com/residuality).
 
 ## License
 
