@@ -610,6 +610,8 @@
         const state = {
             stressors: [],
             components: [],
+            residues: [], // Global residues: { id, text }
+            stressorResidues: {}, // { stressorId: [residueId, ...] }
             matrix: {} // { stressorId: { componentId: 0/1 } }
         };
 
@@ -647,57 +649,61 @@
 
         function loadExample() {
             if (confirm('Load example data? This will replace your current work.')) {
+                // Global residues
+                state.residues = [
+                    { id: 'ex-r1', text: 'Software alert monitoring added' },
+                    { id: 'ex-r2', text: 'Graceful degradation for offline operation' },
+                    { id: 'ex-r3', text: 'Local unlock logic implemented' },
+                    { id: 'ex-r4', text: 'Billing decoupled from payment' },
+                    { id: 'ex-r5', text: 'Invoice later functionality' },
+                    { id: 'ex-r6', text: 'Flexible charging connectors' },
+                    { id: 'ex-r7', text: 'Adaptors for new tech' },
+                    { id: 'ex-r8', text: 'Sensor monitoring installed' },
+                    { id: 'ex-r9', text: 'Security cameras deployed' },
+                    { id: 'ex-r10', text: 'Redundancy in critical systems' }
+                ];
+
                 state.stressors = [
                     {
                         id: 'ex-1',
                         name: 'Server failure',
                         attractor: 'Customer cannot unlock cars',
-                        businessReaction: 'Change unlock mechanism',
-                        residues: [
-                            { id: 'ex-1-r1', text: 'Software alert monitoring added' },
-                            { id: 'ex-1-r2', text: 'Graceful degradation for charging' }
-                        ]
+                        businessReaction: 'Change unlock mechanism'
                     },
                     {
                         id: 'ex-2',
                         name: 'Server failure during charge',
                         attractor: 'Customer locked to charger while server down',
-                        businessReaction: 'Build redundancy into unlock',
-                        residues: [
-                            { id: 'ex-2-r1', text: 'Local unlock logic implemented' }
-                        ]
+                        businessReaction: 'Build redundancy into unlock'
                     },
                     {
                         id: 'ex-3',
                         name: 'Expired Credit card',
                         attractor: 'Payment processing fails',
-                        businessReaction: 'Allow charge now, invoice later',
-                        residues: [
-                            { id: 'ex-3-r1', text: 'Billing decoupled from payment' },
-                            { id: 'ex-3-r2', text: 'Invoice later functionality' }
-                        ]
+                        businessReaction: 'Allow charge now, invoice later'
                     },
                     {
                         id: 'ex-4',
                         name: 'New car model',
                         attractor: 'Cannot charge new models - revenue loss',
-                        businessReaction: 'Support flexible charging standards',
-                        residues: [
-                            { id: 'ex-4-r1', text: 'Flexible charging connectors' },
-                            { id: 'ex-4-r2', text: 'Adaptors for new tech' }
-                        ]
+                        businessReaction: 'Support flexible charging standards'
                     },
                     {
                         id: 'ex-5',
                         name: 'Damaged charger',
                         attractor: 'Few available charges, lost revenue',
-                        businessReaction: 'Deploy redundancy and security',
-                        residues: [
-                            { id: 'ex-5-r1', text: 'Sensor monitoring installed' },
-                            { id: 'ex-5-r2', text: 'Security cameras deployed' }
-                        ]
+                        businessReaction: 'Deploy redundancy and security'
                     }
                 ];
+
+                // Map stressors to residues (with sharing)
+                state.stressorResidues = {
+                    'ex-1': ['ex-r1', 'ex-r2', 'ex-r10'],
+                    'ex-2': ['ex-r2', 'ex-r3', 'ex-r10'],  // Shares 'ex-r2' with ex-1
+                    'ex-3': ['ex-r4', 'ex-r5'],
+                    'ex-4': ['ex-r6', 'ex-r7'],
+                    'ex-5': ['ex-r8', 'ex-r9', 'ex-r10']   // Shares 'ex-r10' with ex-1 and ex-2
+                };
 
                 state.components = [
                     { id: 'ex-c1', name: 'CaptureALPR' },
@@ -795,9 +801,9 @@
                 id,
                 name,
                 attractor: '',
-                businessReaction: '',
-                residues: []
+                businessReaction: ''
             });
+            state.stressorResidues[id] = [];
             state.matrix[id] = {};
             state.components.forEach(c => {
                 state.matrix[id][c.id] = 0;
@@ -810,6 +816,7 @@
         function removeStressor(id) {
             state.stressors = state.stressors.filter(s => s.id !== id);
             delete state.matrix[id];
+            delete state.stressorResidues[id];
             render();
         }
 
@@ -823,26 +830,33 @@
 
         function addResidue(stressorId) {
             const input = document.querySelector(`#residueInput-${stressorId}`);
-            const residue = input.value.trim();
-            if (!residue) return;
+            const residueText = input.value.trim();
+            if (!residueText) return;
             
-            const stressor = state.stressors.find(s => s.id === stressorId);
-            if (stressor) {
-                stressor.residues.push({
-                    id: generateId(),
-                    text: residue
+            // Check if residue text already exists
+            let residueId = state.residues.find(r => r.text === residueText)?.id;
+            
+            // If not, create new global residue
+            if (!residueId) {
+                residueId = generateId();
+                state.residues.push({
+                    id: residueId,
+                    text: residueText
                 });
-                input.value = '';
-                render();
             }
+            
+            // Add reference to stressor
+            if (!state.stressorResidues[stressorId].includes(residueId)) {
+                state.stressorResidues[stressorId].push(residueId);
+            }
+            
+            input.value = '';
+            render();
         }
 
         function removeResidue(stressorId, residueId) {
-            const stressor = state.stressors.find(s => s.id === stressorId);
-            if (stressor) {
-                stressor.residues = stressor.residues.filter(r => r.id !== residueId);
-                render();
-            }
+            state.stressorResidues[stressorId] = state.stressorResidues[stressorId].filter(id => id !== residueId);
+            render();
         }
 
         // COMPONENTS
@@ -940,12 +954,20 @@
                     <div class="field">
                         <label>Residues (Technical Changes)</label>
                         <div class="residues-list">
-                            ${s.residues.length > 0 ? s.residues.map(r => `
+                            ${(state.stressorResidues[s.id] || []).length > 0 ? (state.stressorResidues[s.id] || []).map(residueId => {
+                                const residue = state.residues.find(r => r.id === residueId);
+                                const stressorsUsing = Object.entries(state.stressorResidues)
+                                    .filter(([_, ids]) => ids.includes(residueId))
+                                    .map(([stressorId]) => state.stressors.find(st => st.id === stressorId)?.name)
+                                    .filter(name => name);
+                                const otherStressors = stressorsUsing.filter(name => name !== s.name);
+                                const sharedWith = otherStressors.length > 0 ? ` <em style="font-size: 10px; color: #667eea;">Shared with: ${otherStressors.join(', ')}</em>` : '';
+                                return `
                                 <div class="residue-item">
-                                    <span>${r.text}</span>
-                                    <button class="btn-remove" onclick="removeResidue('${s.id}', '${r.id}')">Remove</button>
+                                    <span>${residue?.text}${sharedWith}</span>
+                                    <button class="btn-remove" onclick="removeResidue('${s.id}', '${residueId}')">Remove</button>
                                 </div>
-                            `).join('') : '<p style="color: #999; font-size: 11px; margin: 0;">No residues yet</p>'}
+                            `;}).join('') : '<p style="color: #999; font-size: 11px; margin: 0;">No residues yet</p>'}
                         </div>
                         <div class="residue-input-group">
                             <input 
@@ -1001,8 +1023,9 @@
             state.components.forEach(c => colTotals[c.id] = 0);
             
             state.stressors.forEach(s => {
-                const residuesList = s.residues.length > 0 
-                    ? s.residues.map(r => r.text).join(', ')
+                const residueIds = state.stressorResidues[s.id] || [];
+                const residuesList = residueIds.length > 0 
+                    ? residueIds.map(id => state.residues.find(r => r.id === id)?.text).join(', ')
                     : 'No technical changes yet';
                 const escapedTitle = residuesList.replace(/"/g, '&quot;');
                 
