@@ -1119,7 +1119,7 @@
             });
             
             if (triggers.length === 0) {
-                container.innerHTML = '<div class="trigger"><div class="trigger-title">✓ No Critical Triggers</div>Architecture appears well-decomposed. Continue stressing to approach criticality.</div>';
+                container.innerHTML = '<div class="trigger"><div class="trigger-title">No Triggers Yet</div>Continue generating stressors. Architecture approaches criticality when new stressors are survived by existing residues or combinations.</div>';
             } else {
                 container.innerHTML = triggers.map(t => `
                     <div class="trigger ${t.type}">
