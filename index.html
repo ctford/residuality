@@ -650,115 +650,122 @@
                 state.stressors = [
                     {
                         id: 'ex-1',
-                        name: 'Business wants multi-user accounts',
-                        attractor: 'Taxi firms and organizations need multiple drivers on one account',
-                        businessReaction: 'Support organizational accounts with role-based access',
+                        name: 'Server failure',
+                        attractor: 'Customer cannot unlock cars',
+                        businessReaction: 'Change unlock mechanism',
                         residues: [
-                            { id: 'ex-1-r1', text: 'Account management system for organizations' },
-                            { id: 'ex-1-r2', text: 'Role-based access control added' }
+                            { id: 'ex-1-r1', text: 'Software alert monitoring added' },
+                            { id: 'ex-1-r2', text: 'Graceful degradation for charging' }
                         ]
                     },
                     {
                         id: 'ex-2',
-                        name: 'Key fob breaks',
-                        attractor: 'Customer stranded at charger unable to unlock car',
-                        businessReaction: 'Establish 24/7 multilingual customer support center',
+                        name: 'Server failure during charge',
+                        attractor: 'Customer locked to charger while server down',
+                        businessReaction: 'Build redundancy into unlock',
                         residues: [
-                            { id: 'ex-2-r1', text: 'License plate reading system implemented' },
-                            { id: 'ex-2-r2', text: 'Billing decoupled from RFID authentication' }
+                            { id: 'ex-2-r1', text: 'Local unlock logic implemented' }
                         ]
                     },
                     {
                         id: 'ex-3',
-                        name: 'Charger physically damaged',
-                        attractor: 'Equipment destroyed, revenue lost',
-                        businessReaction: 'Deploy redundancy and security measures',
+                        name: 'Expired Credit card',
+                        attractor: 'Payment processing fails',
+                        businessReaction: 'Allow charge now, invoice later',
                         residues: [
-                            { id: 'ex-3-r1', text: 'Extra capacity added' },
-                            { id: 'ex-3-r2', text: 'Security cameras installed' }
+                            { id: 'ex-3-r1', text: 'Billing decoupled from payment' },
+                            { id: 'ex-3-r2', text: 'Invoice later functionality' }
                         ]
                     },
                     {
                         id: 'ex-4',
-                        name: 'Long parking duration',
-                        attractor: 'Queue buildup, customers blocked from charging',
-                        businessReaction: 'Introduce time-based pricing to discourage long stays',
+                        name: 'New car model',
+                        attractor: 'Cannot charge new models - revenue loss',
+                        businessReaction: 'Support flexible charging standards',
                         residues: [
-                            { id: 'ex-4-r1', text: 'Sliding scale time-based billing implemented' }
+                            { id: 'ex-4-r1', text: 'Flexible charging connectors' },
+                            { id: 'ex-4-r2', text: 'Adaptors for new tech' }
                         ]
                     },
                     {
                         id: 'ex-5',
-                        name: 'ICE-ing attacks',
-                        attractor: 'Fossil fuel vehicles block chargers to frustrate EV drivers',
-                        businessReaction: 'Deter behavior through enforcement and pricing',
+                        name: 'Damaged charger',
+                        attractor: 'Few available charges, lost revenue',
+                        businessReaction: 'Deploy redundancy and security',
                         residues: [
-                            { id: 'ex-5-r1', text: 'Attackers recorded and identified via cameras and plates' },
-                            { id: 'ex-5-r2', text: 'Billing charges ensure profitability even if occurs' }
-                        ]
-                    },
-                    {
-                        id: 'ex-6',
-                        name: 'New EU regulation (AFIR)',
-                        attractor: 'All chargers must accept ad-hoc credit card payments',
-                        businessReaction: 'Comply with mandatory payment methods',
-                        residues: [
-                            { id: 'ex-6-r1', text: 'Credit card payment processor integrated' },
-                            { id: 'ex-6-r2', text: 'Payment decoupled from customer authentication' }
+                            { id: 'ex-5-r1', text: 'Sensor monitoring installed' },
+                            { id: 'ex-5-r2', text: 'Security cameras deployed' }
                         ]
                     }
                 ];
 
                 state.components = [
-                    { id: 'ex-c1', name: 'Identity & Auth' },
-                    { id: 'ex-c2', name: 'Charger Control' },
-                    { id: 'ex-c3', name: 'Billing Engine' },
-                    { id: 'ex-c4', name: 'Subscription Mgmt' },
-                    { id: 'ex-c5', name: 'Payment Processor' }
+                    { id: 'ex-c1', name: 'CaptureALPR' },
+                    { id: 'ex-c2', name: 'ProcessALPR' },
+                    { id: 'ex-c3', name: 'BillingDetection' },
+                    { id: 'ex-c4', name: 'CustomerLogin' },
+                    { id: 'ex-c5', name: 'ChargeCommand' },
+                    { id: 'ex-c6', name: 'StopChargeCommand' },
+                    { id: 'ex-c7', name: 'CustomerOverstay' },
+                    { id: 'ex-c8', name: 'ALPR_Dump' },
+                    { id: 'ex-c9', name: 'UnlockCar' }
                 ];
 
                 state.matrix = {
                     'ex-1': {
-                        'ex-c1': 1,
-                        'ex-c2': 0,
-                        'ex-c3': 1,
-                        'ex-c4': 1,
-                        'ex-c5': 0
-                    },
-                    'ex-2': {
-                        'ex-c1': 1,
+                        'ex-c1': 0,
                         'ex-c2': 1,
                         'ex-c3': 1,
-                        'ex-c4': 1,
-                        'ex-c5': 0
+                        'ex-c4': 0,
+                        'ex-c5': 1,
+                        'ex-c6': 1,
+                        'ex-c7': 1,
+                        'ex-c8': 0,
+                        'ex-c9': 0
+                    },
+                    'ex-2': {
+                        'ex-c1': 0,
+                        'ex-c2': 0,
+                        'ex-c3': 0,
+                        'ex-c4': 0,
+                        'ex-c5': 0,
+                        'ex-c6': 1,
+                        'ex-c7': 0,
+                        'ex-c8': 0,
+                        'ex-c9': 1
                     },
                     'ex-3': {
                         'ex-c1': 0,
-                        'ex-c2': 1,
-                        'ex-c3': 0,
-                        'ex-c4': 0,
-                        'ex-c5': 0
-                    },
-                    'ex-4': {
-                        'ex-c1': 0,
-                        'ex-c2': 1,
-                        'ex-c3': 1,
-                        'ex-c4': 0,
-                        'ex-c5': 0
-                    },
-                    'ex-5': {
-                        'ex-c1': 1,
-                        'ex-c2': 1,
-                        'ex-c3': 1,
-                        'ex-c4': 0,
-                        'ex-c5': 0
-                    },
-                    'ex-6': {
-                        'ex-c1': 1,
                         'ex-c2': 0,
                         'ex-c3': 1,
                         'ex-c4': 0,
-                        'ex-c5': 1
+                        'ex-c5': 0,
+                        'ex-c6': 0,
+                        'ex-c7': 0,
+                        'ex-c8': 0,
+                        'ex-c9': 1
+                    },
+                    'ex-4': {
+                        'ex-c1': 0,
+                        'ex-c2': 0,
+                        'ex-c3': 0,
+                        'ex-c4': 0,
+                        'ex-c5': 1,
+                        'ex-c6': 1,
+                        'ex-c7': 0,
+                        'ex-c8': 0,
+                        'ex-c9': 1
+                    },
+                    'ex-5': {
+                        'ex-c1': 0,
+                        'ex-c2': 0,
+                        'ex-c3': 0,
+                        'ex-c4': 0,
+                        'ex-c5': 1,
+                        'ex-c6': 1,
+                        'ex-c7': 0,
+                        'ex-c8': 0,
+                        'ex-c9': 0
                     }
                 };
 
