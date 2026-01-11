@@ -649,20 +649,25 @@
 
         function loadExample() {
             if (confirm('Load example data? This will replace your current work.')) {
-                // Global residues
+                // Global residues - from the book's worked example
                 state.residues = [
-                    { id: 'ex-r1', text: 'Software alert monitoring added' },
-                    { id: 'ex-r2', text: 'Graceful degradation for offline operation' },
-                    { id: 'ex-r3', text: 'Local unlock logic implemented' },
-                    { id: 'ex-r4', text: 'Billing decoupled from payment' },
-                    { id: 'ex-r5', text: 'Invoice later functionality' },
-                    { id: 'ex-r6', text: 'Flexible charging connectors' },
-                    { id: 'ex-r7', text: 'Adaptors for new tech' },
-                    { id: 'ex-r8', text: 'Sensor monitoring installed' },
-                    { id: 'ex-r9', text: 'Security cameras deployed' },
-                    { id: 'ex-r10', text: 'Redundancy in critical systems' }
+                    { id: 'ex-r1', text: 'Flexible charging connectors, adaptors, extra space for new tech' },
+                    { id: 'ex-r2', text: 'Batteries' },
+                    { id: 'ex-r3', text: 'Automatic License plate recognition integration' },
+                    { id: 'ex-r4', text: 'Allow charge, invoice later on registration' },
+                    { id: 'ex-r5', text: 'Capacity planning, extra space for expansion' },
+                    { id: 'ex-r6', text: 'Increase margins with physical stores' },
+                    { id: 'ex-r7', text: 'Lobbying, information spreading, partnership' },
+                    { id: 'ex-r8', text: 'Redundancy, security cameras' },
+                    { id: 'ex-r9', text: 'Change unlock mechanism' },
+                    { id: 'ex-r10', text: 'Billing checking, automated services, fee waiving' },
+                    { id: 'ex-r11', text: 'Increase investment' },
+                    { id: 'ex-r12', text: 'Update billing to happen after customer has left the lot. Constant checking of status' },
+                    { id: 'ex-r13', text: 'Different solutions for different geographies' },
+                    { id: 'ex-r14', text: 'Decouple at country level' }
                 ];
 
+                // Five stressors from the book's contagion analysis matrix
                 state.stressors = [
                     {
                         id: 'ex-1',
@@ -679,8 +684,8 @@
                     {
                         id: 'ex-3',
                         name: 'Expired Credit card',
-                        attractor: 'Payment processing fails',
-                        businessReaction: 'Allow charge now, invoice later'
+                        attractor: 'Customer is stranded, queues, customer frustration, revenue loss',
+                        businessReaction: 'Allow charge now, invoice later on registration'
                     },
                     {
                         id: 'ex-4',
@@ -691,20 +696,21 @@
                     {
                         id: 'ex-5',
                         name: 'Damaged charger',
-                        attractor: 'Few available charges, lost revenue',
+                        attractor: 'Few available charges, lost revenue, customer satisfaction affected',
                         businessReaction: 'Deploy redundancy and security'
                     }
                 ];
 
-                // Map stressors to residues (with sharing)
+                // Map stressors to residues from the book
                 state.stressorResidues = {
-                    'ex-1': ['ex-r1', 'ex-r2', 'ex-r10'],
-                    'ex-2': ['ex-r2', 'ex-r3', 'ex-r10'],  // Shares 'ex-r2' with ex-1
-                    'ex-3': ['ex-r4', 'ex-r5'],
-                    'ex-4': ['ex-r6', 'ex-r7'],
-                    'ex-5': ['ex-r8', 'ex-r9', 'ex-r10']   // Shares 'ex-r10' with ex-1 and ex-2
+                    'ex-1': ['ex-r9', 'ex-r10'],
+                    'ex-2': ['ex-r8', 'ex-r9'],
+                    'ex-3': ['ex-r3', 'ex-r4'],
+                    'ex-4': ['ex-r1'],
+                    'ex-5': ['ex-r8']
                 };
 
+                // Components from the book's matrix
                 state.components = [
                     { id: 'ex-c1', name: 'CaptureALPR' },
                     { id: 'ex-c2', name: 'ProcessALPR' },
@@ -713,66 +719,17 @@
                     { id: 'ex-c5', name: 'ChargeCommand' },
                     { id: 'ex-c6', name: 'StopChargeCommand' },
                     { id: 'ex-c7', name: 'CustomerOverstay' },
-                    { id: 'ex-c8', name: 'ALPR_Dump' },
+                    { id: 'ex-c8', name: 'ALPRDump' },
                     { id: 'ex-c9', name: 'UnlockCar' }
                 ];
 
+                // Matrix from the book's contagion analysis section
                 state.matrix = {
-                    'ex-1': {
-                        'ex-c1': 0,
-                        'ex-c2': 1,
-                        'ex-c3': 1,
-                        'ex-c4': 0,
-                        'ex-c5': 1,
-                        'ex-c6': 1,
-                        'ex-c7': 1,
-                        'ex-c8': 0,
-                        'ex-c9': 0
-                    },
-                    'ex-2': {
-                        'ex-c1': 0,
-                        'ex-c2': 0,
-                        'ex-c3': 0,
-                        'ex-c4': 0,
-                        'ex-c5': 0,
-                        'ex-c6': 1,
-                        'ex-c7': 0,
-                        'ex-c8': 0,
-                        'ex-c9': 1
-                    },
-                    'ex-3': {
-                        'ex-c1': 0,
-                        'ex-c2': 0,
-                        'ex-c3': 1,
-                        'ex-c4': 0,
-                        'ex-c5': 0,
-                        'ex-c6': 0,
-                        'ex-c7': 0,
-                        'ex-c8': 0,
-                        'ex-c9': 1
-                    },
-                    'ex-4': {
-                        'ex-c1': 0,
-                        'ex-c2': 0,
-                        'ex-c3': 0,
-                        'ex-c4': 0,
-                        'ex-c5': 1,
-                        'ex-c6': 1,
-                        'ex-c7': 0,
-                        'ex-c8': 0,
-                        'ex-c9': 1
-                    },
-                    'ex-5': {
-                        'ex-c1': 0,
-                        'ex-c2': 0,
-                        'ex-c3': 0,
-                        'ex-c4': 0,
-                        'ex-c5': 1,
-                        'ex-c6': 1,
-                        'ex-c7': 0,
-                        'ex-c8': 0,
-                        'ex-c9': 0
-                    }
+                    'ex-1': { 'ex-c1': 0, 'ex-c2': 1, 'ex-c3': 1, 'ex-c4': 0, 'ex-c5': 1, 'ex-c6': 1, 'ex-c7': 1, 'ex-c8': 0, 'ex-c9': 0 },
+                    'ex-2': { 'ex-c1': 0, 'ex-c2': 0, 'ex-c3': 0, 'ex-c4': 0, 'ex-c5': 0, 'ex-c6': 1, 'ex-c7': 0, 'ex-c8': 0, 'ex-c9': 1 },
+                    'ex-3': { 'ex-c1': 0, 'ex-c2': 0, 'ex-c3': 1, 'ex-c4': 0, 'ex-c5': 0, 'ex-c6': 0, 'ex-c7': 0, 'ex-c8': 0, 'ex-c9': 1 },
+                    'ex-4': { 'ex-c1': 0, 'ex-c2': 0, 'ex-c3': 0, 'ex-c4': 0, 'ex-c5': 1, 'ex-c6': 1, 'ex-c7': 0, 'ex-c8': 0, 'ex-c9': 1 },
+                    'ex-5': { 'ex-c1': 0, 'ex-c2': 0, 'ex-c3': 0, 'ex-c4': 0, 'ex-c5': 1, 'ex-c6': 1, 'ex-c7': 0, 'ex-c8': 0, 'ex-c9': 0 }
                 };
 
                 render();
@@ -1197,45 +1154,69 @@
                 K = (Object.values(colTotals).reduce((a, b) => a + b, 0) / N).toFixed(2);
             }
             
-            // Calculate Residual Index (Ri)
-            const S = state.stressors.length;
-            const Y = state.stressors.filter(s => s.residues.length > 0).length;
-            const X = state.stressors.filter(s => s.residues.length === 0).length;
-            const Ri = S > 0 ? ((Y - X) / S).toFixed(2) : 0;
-            
-            // Overview
-            let html = `
-                <div class="summary-card" style="background: #e0f2ff; border-left: 4px solid #667eea; margin-bottom: 20px;">
-                    <h4>Overview</h4>
-                    <p><strong>Stressors:</strong> ${state.stressors.length}</p>
-                    <p><strong>Components (N):</strong> ${N}</p>
-                    <p><strong>Avg Stressors/Component (K):</strong> ${K}</p>
-                    <p><strong>Total Residues:</strong> ${state.stressors.reduce((sum, s) => sum + s.residues.length, 0)}</p>
-                    <p><strong>Residual Index (Ri):</strong> ${Ri}</p>
-                </div>
-            `;
+            // Count distinct and unique residues
+             const usedResidueIds = new Set();
+             state.stressors.forEach(s => {
+                 (state.stressorResidues[s.id] || []).forEach(rId => usedResidueIds.add(rId));
+             });
+             const distinctResidues = usedResidueIds.size;
+             
+             // Count residues used by only one stressor
+             const residueUsageCount = {};
+             state.stressors.forEach(s => {
+                 (state.stressorResidues[s.id] || []).forEach(rId => {
+                     residueUsageCount[rId] = (residueUsageCount[rId] || 0) + 1;
+                 });
+             });
+             const uniqueResidues = Object.values(residueUsageCount).filter(count => count === 1).length;
+             const avgResidue = state.stressors.length > 0 ? (distinctResidues / state.stressors.length).toFixed(2) : 0;
+             
+             // Overview
+             let html = `
+                 <div class="summary-card" style="background: #e0f2ff; border-left: 4px solid #667eea; margin-bottom: 20px;">
+                     <h4>Overview</h4>
+                     <p><strong>Stressors:</strong> ${state.stressors.length}</p>
+                     <p><strong>Components:</strong> ${N}</p>
+                     <p><strong>Distinct Residues:</strong> ${distinctResidues}</p>
+                     <p><strong>Unique Residues:</strong> ${uniqueResidues}</p>
+                     <div style="margin-bottom: 15px;"></div>
+                     <p><strong>Avg Stressors/Component:</strong> ${K}</p>
+                     <p><strong>Avg Residues/Stressor:</strong> ${avgResidue}</p>
+                 </div>
+             `;
             
             html += '<div class="summary-grid">';
             
             // Stressor details
-            state.stressors.forEach(s => {
-                const affectedCount = state.components.length > 0 
-                    ? state.components.filter(c => state.matrix[s.id][c.id]).length 
-                    : 0;
-                const coverage = state.components.length > 0 
-                    ? Math.round((affectedCount / state.components.length) * 100)
-                    : 0;
-                
-                html += `
-                    <div class="summary-card">
-                        <h4>${s.name}</h4>
-                        ${s.attractor ? `<p><strong>Attractor:</strong> ${s.attractor}</p>` : ''}
-                        ${s.businessReaction ? `<p><strong>Business:</strong> ${s.businessReaction}</p>` : ''}
-                        <p><strong>Residues:</strong> ${s.residues.length}</p>
-                        <p><strong>Component Impact:</strong> ${coverage}%</p>
-                    </div>
-                `;
-            });
+             state.stressors.forEach(s => {
+                 const affectedCount = state.components.length > 0 
+                     ? state.components.filter(c => state.matrix[s.id][c.id]).length 
+                     : 0;
+                 const coverage = state.components.length > 0 
+                     ? Math.round((affectedCount / state.components.length) * 100)
+                     : 0;
+                 
+                 // Count residues for this stressor
+                 const stressorResidues = state.stressorResidues[s.id] || [];
+                 const residueCount = stressorResidues.length;
+                 
+                 // Count unique residues (only used by this stressor)
+                 const uniqueCount = stressorResidues.filter(rId => {
+                     return state.stressors.filter(other => 
+                         (state.stressorResidues[other.id] || []).includes(rId)
+                     ).length === 1;
+                 }).length;
+                 
+                 html += `
+                     <div class="summary-card">
+                         <h4>${s.name}</h4>
+                         ${s.attractor ? `<p><strong>Attractor:</strong> ${s.attractor}</p>` : ''}
+                         ${s.businessReaction ? `<p><strong>Business:</strong> ${s.businessReaction}</p>` : ''}
+                         <p><strong>Residues:</strong> ${residueCount} (${uniqueCount} unique)</p>
+                         <p><strong>Component Impact:</strong> ${coverage}%</p>
+                     </div>
+                 `;
+             });
             
             html += '</div>';
             container.innerHTML = html;
