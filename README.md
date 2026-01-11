@@ -34,14 +34,19 @@ Add scenarios (stressors) and for each one define:
 List your architecture components, services, or major functions.
 
 ### 3. Contagion Analysis
-Build an incidence matrix showing which components are affected by each stressor. The tool automatically detects:
-- **High-impact stressors** affecting many components
-- **Vulnerable components** stressed by many scenarios
-- **Hyperliminal coupling** (hidden dependencies between components)
-- **Untouched components** that may need more testing
+Build an incidence matrix showing which components are affected by each stressor. The matrix reveals:
+- **High-impact stressors** - affecting many components
+- **Vulnerable components** - affected by many stressors
+- **Hyperliminal coupling** - hidden dependencies between components
+- **Untouched components** - that may need more testing
 
 ### 4. Summary
-View your analysis at a glance with component impact metrics.
+View your analysis with key metrics:
+- **N** - Number of components
+- **K** - Average number of stressors per component (measures coupling)
+- **Rd** - Average unique residues per stressor (approaches zero at criticality)
+- **Distinct Residues** - Total unique residues across all stressors
+- **Unique Residues** - Residues used by only one stressor
 
 ## Features
 
@@ -50,9 +55,15 @@ View your analysis at a glance with component impact metrics.
 - **Clear button** - Start fresh when needed
 - **Responsive design** - Works on desktop and mobile
 
+## Example
+
+The tool includes a canned example based on O'Reilly's worked example of an electric vehicle charging station system. Load it via the "Load Example" button to explore the five core stressors and their mapped residues.
+
+O'Reilly advises that a comprehensive stressor analysis typically includes a few hundred stressors. As you add more stressors, the number of distinct residues should stabilize, indicating the architecture is approaching criticality.
+
 ## Attribution
 
-This tool is based on the residuality framework from Barry O'Reilly's book [Residues](https://leanpub.com/residuality).
+This tool is based on the residuality framework from Barry O'Reilly's book [Residuality](https://leanpub.com/residuality).
 
 ## License
 
