@@ -22,33 +22,11 @@ This tool supports this workflow by helping you:
 - Identify contagion patterns and hyperliminal coupling
 - Find robust measures that work across multiple scenarios
 
-## How to Use
-
-### 1. Stressor Analysis
-Add scenarios (stressors) and for each one define:
-- **Attractor**: What system configuration this stressor pushes you toward
-- **Business Reaction**: How the business will respond
-- **Residues**: Technical changes needed to support that reaction
-
-### 2. Contagion Analysis
-Build an incidence matrix showing which components are affected by each stressor. Define your architecture components, services, or major functions, then indicate the impact. The matrix reveals:
-- **High-impact stressors** - affecting many components
-- **Vulnerable components** - affected by many stressors
-- **Hyperliminal coupling** - hidden dependencies between components
-- **Untouched components** - that may need more testing
-
-### 3. Summary
-View your analysis with key metrics:
-- **Stressors** - Total number of stressors defined
-- **Components** - Total number of architecture components
-- **Distinct Residues** - Total unique residues across all stressors
-- **Unique Residues** - Residues used by only one stressor
-- **Avg Stressors/Component (K)** - Average coupling per component
-- **Avg Distinct Residues/Stressor** - Reuse metric (approaches zero at criticality)
-- **Avg Unique Residues/Stressor** - Novelty metric (approaches zero at criticality)
-
 ## Features
 
+- **Stressor Analysis** - Define stressors, attractors, business reactions, and technical residues
+- **Contagion Matrix** - Visualize component impact across stressors and identify hidden coupling
+- **Summary Metrics** - Track reuse and novelty as your architecture approaches criticality
 - **Persistent storage** - Your work is saved in browser localStorage
 - **URL routing** - Bookmark specific tabs with URL fragments
 - **Clear button** - Start fresh when needed
