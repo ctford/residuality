@@ -1174,6 +1174,12 @@
                 K = (Object.values(colTotals).reduce((a, b) => a + b, 0) / N).toFixed(2);
             }
             
+            // Calculate Residual Index (Ri)
+            const S = state.stressors.length;
+            const Y = state.stressors.filter(s => s.residues.length > 0).length;
+            const X = state.stressors.filter(s => s.residues.length === 0).length;
+            const Ri = S > 0 ? ((Y - X) / S).toFixed(2) : 0;
+            
             // Overview
             let html = `
                 <div class="summary-card" style="background: #e0f2ff; border-left: 4px solid #667eea; margin-bottom: 20px;">
@@ -1182,6 +1188,7 @@
                     <p><strong>Components (N):</strong> ${N}</p>
                     <p><strong>Avg Stressors/Component (K):</strong> ${K}</p>
                     <p><strong>Total Residues:</strong> ${state.stressors.reduce((sum, s) => sum + s.residues.length, 0)}</p>
+                    <p><strong>Residual Index (Ri):</strong> ${Ri}</p>
                 </div>
             `;
             
