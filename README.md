@@ -57,7 +57,7 @@ View your analysis with key metrics:
 
 ## Example
 
-The tool includes a canned example based on O'Reilly's worked example of an electric vehicle charging station system. Load it via the "Load Example" button to explore the five core stressors and their mapped residues.
+The tool includes a canned example based on O'Reilly's worked example of an electric vehicle charging station system. Load it via the "Load Example" button to explore all 14 stressors and their mapped residues.
 
 O'Reilly advises that a comprehensive stressor analysis typically includes a few hundred stressors. As you add more stressors, the number of distinct residues should stabilize, indicating the architecture is approaching criticality.
 
