@@ -1075,7 +1075,7 @@
             // Trigger 1: High row totals (high-impact stressors)
             state.stressors.forEach(s => {
                 const impactRatio = rowTotals[s.id] / totalComponents;
-                if (impactRatio > 0.6) {
+                if (impactRatio >= 0.5) {
                     triggers.push({
                         type: 'critical',
                         num: 1,
@@ -1088,7 +1088,7 @@
             // Trigger 2: High column totals (vulnerable components)
             state.components.forEach(c => {
                 const stressRatio = colTotals[c.id] / state.stressors.length;
-                if (stressRatio > 0.7) {
+                if (stressRatio >= 0.5) {
                     triggers.push({
                         type: 'critical',
                         num: 2,
