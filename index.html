@@ -410,6 +410,11 @@
             border-left-color: #f44336;
         }
 
+        .trigger.info {
+            background: #e0f2ff;
+            border-left-color: #667eea;
+        }
+
         .trigger-title {
             font-weight: bold;
             color: #333;
@@ -1115,6 +1120,27 @@
                         title: `Untouched Component: ${c.name}`,
                         desc: `Not affected by any stressor. Either invulnerable or needs more stress testing.`
                     });
+                }
+            });
+            
+            // Trigger 8: Identical component patterns (can be combined)
+            const patterns = {};
+            state.components.forEach(c => {
+                const pattern = state.stressors.map(s => state.matrix[s.id][c.id] || 0).join(',');
+                if (!patterns[pattern]) patterns[pattern] = [];
+                patterns[pattern].push(c);
+            });
+            
+            let triggerNum = 8;
+            Object.values(patterns).forEach(components => {
+                if (components.length > 1) {
+                    triggers.push({
+                        type: 'info',
+                        num: triggerNum,
+                        title: `Identical Patterns: ${components.map(c => c.name).join(', ')}`,
+                        desc: `These components respond identically to all stressors. Consider combining them to reduce architectural complexity (N).`
+                    });
+                    triggerNum++;
                 }
             });
             
