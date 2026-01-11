@@ -651,17 +651,16 @@
             if (confirm('Load example data? This will replace your current work.')) {
                 // Global residues - from the book's worked example
                 state.residues = [
-                    { id: 'ex-r1', text: 'Flexible charging connectors, adaptors, extra space for new tech' },
+                    { id: 'ex-r1', text: 'Flexible charging connectors' },
+                    { id: 'ex-r1b', text: 'Adaptors for new tech' },
+                    { id: 'ex-r1c', text: 'Extra space for expansion' },
                     { id: 'ex-r2', text: 'Batteries' },
                     { id: 'ex-r3', text: 'Automatic License plate recognition integration' },
                     { id: 'ex-r4', text: 'Allow charge, invoice later on registration' },
                     { id: 'ex-r5', text: 'Capacity planning, extra space for expansion' },
-                    { id: 'ex-r6', text: 'Increase margins with physical stores' },
-                    { id: 'ex-r7', text: 'Lobbying, information spreading, partnership' },
                     { id: 'ex-r8', text: 'Redundancy, security cameras' },
                     { id: 'ex-r9', text: 'Change unlock mechanism' },
                     { id: 'ex-r10', text: 'Billing checking, automated services, fee waiving' },
-                    { id: 'ex-r11', text: 'Increase investment' },
                     { id: 'ex-r12', text: 'Update billing to happen after customer has left the lot. Constant checking of status' },
                     { id: 'ex-r13', text: 'Different solutions for different geographies' },
                     { id: 'ex-r14', text: 'Decouple at country level' }
@@ -757,17 +756,17 @@
 
                 // Map stressors to residues from the book
                 state.stressorResidues = {
-                    'ex-1': ['ex-r1'],
+                    'ex-1': ['ex-r1', 'ex-r1b', 'ex-r1c'],
                     'ex-2': ['ex-r2'],
                     'ex-3': ['ex-r3', 'ex-r4'],
                     'ex-4': [],
                     'ex-5': ['ex-r5'],
-                    'ex-6': ['ex-r6'],
-                    'ex-7': ['ex-r7'],
+                    'ex-6': [],
+                    'ex-7': [],
                     'ex-8': ['ex-r8'],
                     'ex-9': ['ex-r9', 'ex-r10'],
                     'ex-10': ['ex-r10'],
-                    'ex-11': ['ex-r11'],
+                    'ex-11': [],
                     'ex-12': ['ex-r12'],
                     'ex-13': ['ex-r13'],
                     'ex-14': ['ex-r3', 'ex-r8', 'ex-r12']
