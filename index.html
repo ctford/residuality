@@ -1169,7 +1169,8 @@
                  });
              });
              const uniqueResidues = Object.values(residueUsageCount).filter(count => count === 1).length;
-             const avgResidue = state.stressors.length > 0 ? (distinctResidues / state.stressors.length).toFixed(2) : 0;
+             const avgDistinctResidue = state.stressors.length > 0 ? (distinctResidues / state.stressors.length).toFixed(2) : 0;
+             const avgUniqueResidue = state.stressors.length > 0 ? (uniqueResidues / state.stressors.length).toFixed(2) : 0;
              
              // Overview
              let html = `
@@ -1181,7 +1182,8 @@
                      <p><strong>Unique Residues:</strong> ${uniqueResidues}</p>
                      <div style="margin-bottom: 15px;"></div>
                      <p><strong>Avg Stressors/Component:</strong> ${K}</p>
-                     <p><strong>Avg Residues/Stressor:</strong> ${avgResidue}</p>
+                     <p><strong>Avg Distinct Residues/Stressor:</strong> ${avgDistinctResidue}</p>
+                     <p><strong>Avg Unique Residues/Stressor:</strong> ${avgUniqueResidue}</p>
                  </div>
              `;
             
