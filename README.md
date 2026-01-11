@@ -30,17 +30,14 @@ Add scenarios (stressors) and for each one define:
 - **Business Reaction**: How the business will respond
 - **Residues**: Technical changes needed to support that reaction
 
-### 2. Components
-List your architecture components, services, or major functions.
-
-### 3. Contagion Analysis
-Build an incidence matrix showing which components are affected by each stressor. The matrix reveals:
+### 2. Contagion Analysis
+Build an incidence matrix showing which components are affected by each stressor. Define your architecture components, services, or major functions, then indicate the impact. The matrix reveals:
 - **High-impact stressors** - affecting many components
 - **Vulnerable components** - affected by many stressors
 - **Hyperliminal coupling** - hidden dependencies between components
 - **Untouched components** - that may need more testing
 
-### 4. Summary
+### 3. Summary
 View your analysis with key metrics:
 - **N** - Number of components
 - **K** - Average number of stressors per component (measures coupling)
