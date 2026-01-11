@@ -1096,7 +1096,7 @@
             // Trigger 3: Multiple 1s in same row (hyperliminal coupling)
             state.stressors.forEach(s => {
                 const affectedComponents = state.components.filter(c => state.matrix[s.id][c.id]);
-                if (affectedComponents.length > 2) {
+                if (affectedComponents.length >= 2) {
                     triggers.push({
                         type: 'warning',
                         num: 3,
