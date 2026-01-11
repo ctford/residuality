@@ -667,47 +667,110 @@
                     { id: 'ex-r14', text: 'Decouple at country level' }
                 ];
 
-                // Five stressors from the book's contagion analysis matrix
+                // All 14 stressors from the book's worked example
                 state.stressors = [
                     {
                         id: 'ex-1',
+                        name: 'New car models',
+                        attractor: 'Cannot charge new models - revenue loss',
+                        businessReaction: 'Support flexible charging standards'
+                    },
+                    {
+                        id: 'ex-2',
+                        name: 'Electricity failure',
+                        attractor: 'Cannot charge cars - revenue loss',
+                        businessReaction: 'Deploy battery backup'
+                    },
+                    {
+                        id: 'ex-3',
+                        name: 'Failed login',
+                        attractor: 'Customer is stranded, queues, customer frustration, revenue loss',
+                        businessReaction: 'Allow charge, invoice later on registration'
+                    },
+                    {
+                        id: 'ex-4',
+                        name: 'Electric car market crashes',
+                        attractor: 'Business is no longer viable',
+                        businessReaction: 'Convert to petrol stations'
+                    },
+                    {
+                        id: 'ex-5',
+                        name: 'Queues',
+                        attractor: 'Customer churn, lost revenues',
+                        businessReaction: 'Capacity planning, extra space for expansion'
+                    },
+                    {
+                        id: 'ex-6',
+                        name: 'Competitors cheaper',
+                        attractor: 'Customer churn, fewer available customers',
+                        businessReaction: 'Increase margins with physical stores'
+                    },
+                    {
+                        id: 'ex-7',
+                        name: 'Competitors lockin/manufacturer',
+                        attractor: 'Fewer available customers',
+                        businessReaction: 'Lobbying, information spreading, partnership'
+                    },
+                    {
+                        id: 'ex-8',
+                        name: 'Damage (accident/criminal)',
+                        attractor: 'Fewer available charges, lost revenue, customer satisfaction affected',
+                        businessReaction: 'Deploy redundancy and security'
+                    },
+                    {
+                        id: 'ex-9',
                         name: 'Server failure',
                         attractor: 'Customer cannot unlock cars',
                         businessReaction: 'Change unlock mechanism'
                     },
                     {
-                        id: 'ex-2',
-                        name: 'Server failure during charge',
-                        attractor: 'Customer locked to charger while server down',
-                        businessReaction: 'Build redundancy into unlock'
+                        id: 'ex-10',
+                        name: 'Billing errors',
+                        attractor: 'Customer satisfaction affected',
+                        businessReaction: 'Waive fees and automated billing checks'
                     },
                     {
-                        id: 'ex-3',
-                        name: 'Expired Credit card',
-                        attractor: 'Customer is stranded, queues, customer frustration, revenue loss',
-                        businessReaction: 'Allow charge now, invoice later on registration'
+                        id: 'ex-11',
+                        name: 'Competitors better coverage',
+                        attractor: 'Fewer available customers',
+                        businessReaction: 'Increase investment'
                     },
                     {
-                        id: 'ex-4',
-                        name: 'New car model',
-                        attractor: 'Cannot charge new models - revenue loss',
-                        businessReaction: 'Support flexible charging standards'
+                        id: 'ex-12',
+                        name: 'Customer abandons car in slot',
+                        attractor: 'Fewer available chargers, less revenue, customer satisfaction affected',
+                        businessReaction: 'Invoice per minute with time-based billing'
                     },
                     {
-                        id: 'ex-5',
-                        name: 'Damaged charger',
-                        attractor: 'Few available charges, lost revenue, customer satisfaction affected',
-                        businessReaction: 'Deploy redundancy and security'
+                        id: 'ex-13',
+                        name: 'Privacy regulation',
+                        attractor: 'Cannot store customer data outside home country',
+                        businessReaction: 'Different solutions for different geographies'
+                    },
+                    {
+                        id: 'ex-14',
+                        name: 'ICE-ing',
+                        attractor: 'Fossil fuel vehicles blocking chargers',
+                        businessReaction: 'License plate detection, cameras, penalties'
                     }
                 ];
 
                 // Map stressors to residues from the book
                 state.stressorResidues = {
-                    'ex-1': ['ex-r9', 'ex-r10'],
-                    'ex-2': ['ex-r8', 'ex-r9'],
+                    'ex-1': ['ex-r1'],
+                    'ex-2': ['ex-r2'],
                     'ex-3': ['ex-r3', 'ex-r4'],
-                    'ex-4': ['ex-r1'],
-                    'ex-5': ['ex-r8']
+                    'ex-4': [],
+                    'ex-5': ['ex-r5'],
+                    'ex-6': ['ex-r6'],
+                    'ex-7': ['ex-r7'],
+                    'ex-8': ['ex-r8'],
+                    'ex-9': ['ex-r9', 'ex-r10'],
+                    'ex-10': ['ex-r10'],
+                    'ex-11': ['ex-r11'],
+                    'ex-12': ['ex-r12'],
+                    'ex-13': ['ex-r13'],
+                    'ex-14': ['ex-r3', 'ex-r8', 'ex-r12']
                 };
 
                 // Components from the book's matrix
@@ -723,13 +786,22 @@
                     { id: 'ex-c9', name: 'UnlockCar' }
                 ];
 
-                // Matrix from the book's contagion analysis section
+                // Matrix from the book's worked example + educated guesses for additional stressors
                 state.matrix = {
-                    'ex-1': { 'ex-c1': 0, 'ex-c2': 1, 'ex-c3': 1, 'ex-c4': 0, 'ex-c5': 1, 'ex-c6': 1, 'ex-c7': 1, 'ex-c8': 0, 'ex-c9': 0 },
-                    'ex-2': { 'ex-c1': 0, 'ex-c2': 0, 'ex-c3': 0, 'ex-c4': 0, 'ex-c5': 0, 'ex-c6': 1, 'ex-c7': 0, 'ex-c8': 0, 'ex-c9': 1 },
-                    'ex-3': { 'ex-c1': 0, 'ex-c2': 0, 'ex-c3': 1, 'ex-c4': 0, 'ex-c5': 0, 'ex-c6': 0, 'ex-c7': 0, 'ex-c8': 0, 'ex-c9': 1 },
-                    'ex-4': { 'ex-c1': 0, 'ex-c2': 0, 'ex-c3': 0, 'ex-c4': 0, 'ex-c5': 1, 'ex-c6': 1, 'ex-c7': 0, 'ex-c8': 0, 'ex-c9': 1 },
-                    'ex-5': { 'ex-c1': 0, 'ex-c2': 0, 'ex-c3': 0, 'ex-c4': 0, 'ex-c5': 1, 'ex-c6': 1, 'ex-c7': 0, 'ex-c8': 0, 'ex-c9': 0 }
+                    'ex-1': { 'ex-c1': 0, 'ex-c2': 1, 'ex-c3': 0, 'ex-c4': 0, 'ex-c5': 1, 'ex-c6': 1, 'ex-c7': 0, 'ex-c8': 0, 'ex-c9': 0 },
+                    'ex-2': { 'ex-c1': 0, 'ex-c2': 0, 'ex-c3': 0, 'ex-c4': 0, 'ex-c5': 1, 'ex-c6': 1, 'ex-c7': 0, 'ex-c8': 0, 'ex-c9': 0 },
+                    'ex-3': { 'ex-c1': 0, 'ex-c2': 1, 'ex-c3': 0, 'ex-c4': 1, 'ex-c5': 0, 'ex-c6': 0, 'ex-c7': 0, 'ex-c8': 0, 'ex-c9': 1 },
+                    'ex-4': { 'ex-c1': 0, 'ex-c2': 0, 'ex-c3': 0, 'ex-c4': 0, 'ex-c5': 0, 'ex-c6': 0, 'ex-c7': 0, 'ex-c8': 0, 'ex-c9': 0 },
+                    'ex-5': { 'ex-c1': 0, 'ex-c2': 0, 'ex-c3': 0, 'ex-c4': 0, 'ex-c5': 0, 'ex-c6': 0, 'ex-c7': 1, 'ex-c8': 0, 'ex-c9': 0 },
+                    'ex-6': { 'ex-c1': 0, 'ex-c2': 0, 'ex-c3': 0, 'ex-c4': 0, 'ex-c5': 0, 'ex-c6': 0, 'ex-c7': 0, 'ex-c8': 0, 'ex-c9': 0 },
+                    'ex-7': { 'ex-c1': 0, 'ex-c2': 0, 'ex-c3': 0, 'ex-c4': 0, 'ex-c5': 0, 'ex-c6': 0, 'ex-c7': 0, 'ex-c8': 0, 'ex-c9': 0 },
+                    'ex-8': { 'ex-c1': 0, 'ex-c2': 0, 'ex-c3': 0, 'ex-c4': 0, 'ex-c5': 1, 'ex-c6': 1, 'ex-c7': 0, 'ex-c8': 0, 'ex-c9': 0 },
+                    'ex-9': { 'ex-c1': 0, 'ex-c2': 1, 'ex-c3': 1, 'ex-c4': 0, 'ex-c5': 1, 'ex-c6': 1, 'ex-c7': 1, 'ex-c8': 0, 'ex-c9': 0 },
+                    'ex-10': { 'ex-c1': 0, 'ex-c2': 0, 'ex-c3': 1, 'ex-c4': 0, 'ex-c5': 0, 'ex-c6': 0, 'ex-c7': 0, 'ex-c8': 0, 'ex-c9': 0 },
+                    'ex-11': { 'ex-c1': 0, 'ex-c2': 0, 'ex-c3': 0, 'ex-c4': 0, 'ex-c5': 0, 'ex-c6': 0, 'ex-c7': 0, 'ex-c8': 0, 'ex-c9': 0 },
+                    'ex-12': { 'ex-c1': 0, 'ex-c2': 0, 'ex-c3': 1, 'ex-c4': 0, 'ex-c5': 0, 'ex-c6': 0, 'ex-c7': 1, 'ex-c8': 0, 'ex-c9': 0 },
+                    'ex-13': { 'ex-c1': 0, 'ex-c2': 0, 'ex-c3': 0, 'ex-c4': 0, 'ex-c5': 0, 'ex-c6': 0, 'ex-c7': 0, 'ex-c8': 1, 'ex-c9': 0 },
+                    'ex-14': { 'ex-c1': 1, 'ex-c2': 0, 'ex-c3': 0, 'ex-c4': 0, 'ex-c5': 0, 'ex-c6': 0, 'ex-c7': 0, 'ex-c8': 1, 'ex-c9': 0 }
                 };
 
                 render();
