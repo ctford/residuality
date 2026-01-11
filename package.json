@@ -1,0 +1,29 @@
+{
+  "name": "residuality",
+  "version": "1.0.0",
+  "description": "A single-page web application for applying Barry O'Reilly's residuality framework to architectural decision-making.",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "lint": "node scripts/lint.js",
+    "lint:fix": "echo 'Manual fixes needed in index.html'",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ctford/residuality.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ctford/residuality/issues"
+  },
+  "homepage": "https://github.com/ctford/residuality#readme",
+  "devDependencies": {
+    "eslint": "^9.39.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7"
+  }
+}

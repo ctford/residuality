@@ -1,5 +1,7 @@
 # Residuality Analysis Tool
 
+[![Lint](https://github.com/ctford/residuality/actions/workflows/lint.yml/badge.svg)](https://github.com/ctford/residuality/actions/workflows/lint.yml)
+
 A single-page web application for applying Barry O'Reilly's residuality framework to architectural decision-making.
 
 **Live demo:** https://ctford.github.io/residuality/
@@ -56,8 +58,29 @@ This tool is based on the residuality framework from Barry O'Reilly's book [Resi
 
 MIT - See LICENSE file for details.
 
+## Development
+
+### Setup
+
+Clone the repo and run the setup script to install git hooks:
+
+```bash
+git clone https://github.com/ctford/residuality.git
+cd residuality
+./setup-hooks.sh
+```
+
+### Linting
+
+```bash
+npm run lint        # Run ESLint
+npm run lint:fix    # Fix linting issues automatically
+```
+
+ESLint will run automatically on `git commit` via pre-commit hooks.
+
 ## Technical Details
 
-Single HTML file with vanilla JavaScript. No dependencies, no build process. Just open in a modern web browser.
+Single HTML file with vanilla JavaScript. Dependencies limited to development tools (ESLint, Husky).
 
 Data is stored in browser localStorage and is not sent anywhere.
