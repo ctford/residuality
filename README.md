@@ -39,11 +39,13 @@ Build an incidence matrix showing which components are affected by each stressor
 
 ### 3. Summary
 View your analysis with key metrics:
-- **N** - Number of components
-- **K** - Average number of stressors per component (measures coupling)
-- **Rd** - Average unique residues per stressor (approaches zero at criticality)
+- **Stressors** - Total number of stressors defined
+- **Components** - Total number of architecture components
 - **Distinct Residues** - Total unique residues across all stressors
 - **Unique Residues** - Residues used by only one stressor
+- **Avg Stressors/Component (K)** - Average coupling per component
+- **Avg Distinct Residues/Stressor** - Reuse metric (approaches zero at criticality)
+- **Avg Unique Residues/Stressor** - Novelty metric (approaches zero at criticality)
 
 ## Features
 
