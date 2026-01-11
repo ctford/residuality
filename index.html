@@ -1217,9 +1217,21 @@
                      </div>
                  `;
              });
-            
-            html += '</div>';
-            container.innerHTML = html;
+             
+             html += '</div>';
+             
+             // Add guidance text
+             html += `
+                 <div class="summary-card" style="background: #f9f9f9; border-left: 4px solid #999; margin-top: 30px;">
+                     <p style="font-size: 13px; color: #666; line-height: 1.6;">
+                         O'Reilly advises that a standard stressor analysis would likely consist of a few hundred stressors. 
+                         As you add more stressors, the number of distinct residues should stabilise, indicating the architecture 
+                         is approaching criticality and can handle unforeseen combinations of stressors.
+                     </p>
+                 </div>
+             `;
+             
+             container.innerHTML = html;
         }
 
         function render() {
